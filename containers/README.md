@@ -1,0 +1,1 @@
+This folder contains exercises and labs around containers

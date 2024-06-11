@@ -1,0 +1,36 @@
+apiVersion: appconnect.ibm.com/v1beta1
+kind: IntegrationServer
+metadata:
+  name: mq-to-mq
+spec:
+  adminServerSecure: true
+  createDashboardUsers: true
+  designerFlowsOperationMode: disabled
+  enableMetrics: true
+  license:
+    accept: true
+    license: L-UTKS-P46KK2
+    use: CloudPakForIntegrationNonProduction
+  pod:
+    containers:
+      runtime:
+        resources:
+          limits:
+            cpu: 1
+            memory: 500Mi
+          requests:
+            cpu: 1
+            memory: 500Mi
+  replicas: 1
+  router:
+    timeout: 120s
+  service:
+    endpointType: http
+  version: "12.0"
+  barURL: >-
+    https://nexus-example-nexus.vm-ocp-lon02-b3c-16x64-44ed96f14ba9fdd578347b319d08ea1e-0000.eu-gb.containers.appdomain.cloud/repository/vm-test-auto/bars/testingauto-jenkins-build-pipeline-127.bar
+  configurations:
+    - ace-dbparms
+    - mqpolicy
+    - barauth
+    - ace-odbcini

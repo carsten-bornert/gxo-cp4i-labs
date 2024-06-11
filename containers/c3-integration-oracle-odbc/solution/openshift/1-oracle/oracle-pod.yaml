@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oracles
+  labels:
+    app: oracle-db
+spec:
+  containers:
+    - name: oracle-db
+      image: container-registry.oracle.com/database/free
+      ports:
+        - containerPort: 1521
+      env:
+        - name: ORACLE_PWD
+          value: "c0nt41n3r"
+      volumeMounts:
+        - name: sql-script
+          mountPath: /opt/oracle/scripts/startup
+          readOnly: true
+  volumes:
+    - name: sql-script
+      configMap:
+        name: init-sql-script

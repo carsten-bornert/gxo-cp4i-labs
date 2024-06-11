@@ -1,0 +1,3 @@
+mq::userinfo  aceapp  aceapp
+
+odbc::USERDB system c0nt41n3r

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: greetings
+  namespace: cbtest
+  labels: 
+    app.kubernetes.io/part-of: greetings-app
+spec:
+  selector:
+    deployment: greetings
+  ports:
+    - name: 7800-tcp
+      protocol: TCP
+      port: 7800
+      targetPort: 7800

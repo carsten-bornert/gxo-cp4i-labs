@@ -1,0 +1,80 @@
+#!/bin/bash
+
+################## Defining utility functions
+
+function check_dependencies() {
+  REQUIRED=("jq" "oc")
+
+  for item in ${REQUIRED[@]}; do
+    if ! command -v $item >/dev/null 2>&1; then
+      echo "${item} is not installed."
+      DEPS_NOT_MET=1
+    fi  
+  done
+
+  if [ ! -z $DEPS_NOT_MET ] ; then
+    echo "Dependencies not met. Exiting script..."
+    exit 1
+  fi
+}
+
+function checked_oc_login() {
+  if [[ -z $(oc whoami) ]]; then
+    echo "You are not logged into an OpenShift cluster."
+    echo "Please log in using your credentials:"
+    exit 1
+  fi
+}
+
+function get_urls_and_tokens() {
+    HOST=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
+    REGISTRY_TOKEN=$(oc whoami -t)
+    REGISTRY=$(oc get route default-route -n openshift-image-registry --template='{{ .spec.host }}')
+}
+
+################## end utils
+
+
+################## Main script
+
+# parsing parameters
+POSITIONAL_ARGS=()
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -i|--image)
+      IMAGE=$2
+      shift # past argument
+      shift # past value
+      ;;
+    -l|--list)
+      LIST="1"
+      shift # past argument
+      # shift # past value
+      ;;
+    -*|--*)
+      echo "Unknown option $1"
+      exit 1
+      ;;
+    *)
+      POSITIONAL_ARGS+=("$1") # save positional arg
+      shift # past argument
+      ;;
+  esac
+done
+
+
+set -e
+check_dependencies
+checked_oc_login
+get_urls_and_tokens
+
+if [ ! -z $LIST ]; then
+  echo "Showing the list of images on the registry...."
+  curl -s -H "Authorization: Bearer $REGISTRY_TOKEN" https://$REGISTRY/v2/_catalog | jq
+fi
+
+if [ ! -z $IMAGE ]; then
+  echo "Showing the list of tags for" $IMAGE
+  curl -s -H "Authorization: Bearer $REGISTRY_TOKEN" https://$REGISTRY/v2/$IMAGE/tags/list | jq
+fi

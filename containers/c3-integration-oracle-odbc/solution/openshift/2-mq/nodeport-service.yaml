@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: qm-1-ibm-mq-np
+spec:
+  ports:
+    - protocol: TCP
+      port: 1414
+      targetPort: 1414
+      nodePort: 30001
+  type: NodePort
+  selector:
+    app.kubernetes.io/component: integration
+    app.kubernetes.io/instance: qm-1
+    app.kubernetes.io/managed-by: operator
+    app.kubernetes.io/name: ibm-mq

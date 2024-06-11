@@ -1,0 +1,13 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: init-sql-script
+data:
+  init.sql: |
+    CREATE TABLE SYSTEM.TESTING( CHANNEL VARCHAR2(255) );
+
+    CREATE TABLE SYSTEM.departments (
+      ID          INTEGER   PRIMARY KEY NOT NULL,
+      DESCRIPTION  VARCHAR2(50)  NOT NULL);
+
+    INSERT INTO SYSTEM.departments (ID,DESCRIPTION) VALUES (1,'CE_DEPARTMENT');

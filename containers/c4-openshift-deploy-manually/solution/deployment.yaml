@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: cbtest
+  name: greetings
+  labels: 
+    app.kubernetes.io/part-of: greetings-app
+spec:
+  selector:
+    matchLabels:
+      deployment: greetings
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        deployment: greetings
+    spec:
+      containers:
+        - name: greetings
+          image: >-
+            image-registry.openshift-image-registry.svc:5000/cbtest/greetings:latest
+          ports:
+            - containerPort: 7800
+              protocol: TCP
+          env:
+            - name: LICENSE
+              value: accept
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%

@@ -1,0 +1,3 @@
+ResourceManagers:
+  JVM:
+    jvmDebugPort: 9997
