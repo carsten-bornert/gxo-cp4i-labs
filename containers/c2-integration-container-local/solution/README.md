@@ -6,7 +6,7 @@ Command to pull registered image:
 <!-- `docker pull cp.icr.io/cp/appc/ace:12.0.12.0-r1@sha256:33000e4b20570524c44203ba32b047cb752d3935fcd6dfa8b94ee862f75993aa --platform linux/amd64` -->
 
 Command to add version tag to local image:
-`docker tag 33b4af0a602d cp.icr.io/cp/appc/ace-server-prod:12.0.12.2-r1`
+`docker tag 1e0a292f1428 cp.icr.io/cp/appc/ace-server-prod:12.0.12.2-r1`
 
 Command to build iamge
 `docker build -f solution/Dockerfile -t greetings --platform linux/amd64 . `

@@ -52,6 +52,11 @@ while [[ $# -gt 0 ]]; do
       shift # past argument
       # shift # past value
       ;;
+    -r|--registry-login)
+      LOGIN="1"
+      shift # past argument
+      # shift # past value
+      ;;
     -*|--*)
       echo "Unknown option $1"
       exit 1
@@ -78,3 +83,10 @@ if [ ! -z $IMAGE ]; then
   echo "Showing the list of tags for" $IMAGE
   curl -s -H "Authorization: Bearer $REGISTRY_TOKEN" https://$REGISTRY/v2/$IMAGE/tags/list | jq
 fi
+
+if [ ! -z $LOGIN ]; then
+  echo "Logging in to image registry.."
+  docker login -u $(oc whoami) -p $REGISTRY_TOKEN $HOST
+fi
+
+echo "DONE"

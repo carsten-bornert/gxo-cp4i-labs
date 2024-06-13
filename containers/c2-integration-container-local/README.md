@@ -3,7 +3,7 @@ Containerise a REST API implemented in ACE (bar file provided)
 
 # Instructions
 - Write a Dockerfile that uses an IBM Certified ACE base image (cp.icr.io/cp/appc/ace-server-prod)
-- Include (bake) the supplied bar file into the image
+- Include (bake) the supplied bar file into the image (in the `/home/aceuser/initial-config/bars` directory)
 - Build the image and test the container running locally with a GET request to http://localhost:7800/greetingsapi/v1/hello?name=Jeremy
 - observe logs of container (especially startup entries) using `docker logs` command
 

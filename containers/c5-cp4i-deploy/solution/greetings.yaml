@@ -1,0 +1,28 @@
+apiVersion: appconnect.ibm.com/v1beta1
+kind: IntegrationRuntime
+metadata:
+  name: greetings
+  labels:
+    backup.appconnect.ibm.com/component: integrationruntime
+  namespace: cbtest
+spec:
+  license:
+    accept: true
+    license: L-QECF-MBXVLU
+    use: CloudPakForIntegrationNonProductionFREE
+  flowType:
+    toolkitFlow: true
+  template:
+    spec:
+      containers:
+        - resources:
+            requests:
+              cpu: 300m
+              memory: 368Mi
+          name: runtime
+          image: 'image-registry.openshift-image-registry.svc:5000/cbtest/greetings'
+  logFormat: basic
+  defaultNetworkPolicy:
+    enabled: true
+  replicas: 1
+  version: 12.0.12.0-r2
