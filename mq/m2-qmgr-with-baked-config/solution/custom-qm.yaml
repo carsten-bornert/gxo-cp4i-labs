@@ -1,0 +1,22 @@
+apiVersion: mq.ibm.com/v1beta1
+kind: QueueManager
+metadata:
+  name: custom-qm
+  annotations:
+    com.ibm.mq/write-defaults-spec: 'false'
+  namespace: cbtest
+spec:
+  license:
+    accept: true
+    license: L-AMRD-XH6P3Q
+    use: Production
+  web:
+    enabled: false
+  queueManager:
+    image: image-registry.openshift-image-registry.svc:5000/cbtest/mqcustom:v1
+    availability:
+      type: SingleInstance
+    storage:
+      queueManager:
+        type: persistent-claim
+  version: 9.3.5.1-r2
