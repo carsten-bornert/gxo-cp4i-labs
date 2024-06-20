@@ -1,0 +1,11 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: qm1-definitions
+  namespace: cp4i
+data:
+  defs-v1: |-
+    DEFINE QL(BACKEND) REPLACE
+    DEFINE CHANNEL(ACEMQCLIENT) CHLTYPE (SVRCONN) SSLCAUTH(OPTIONAL) REPLACE
+    ALTER QMGR CHLAUTH(DISABLED)
+    REFRESH SECURITY
