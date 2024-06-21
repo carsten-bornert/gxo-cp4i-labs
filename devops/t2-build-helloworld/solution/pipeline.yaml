@@ -1,0 +1,77 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: build-hello-world
+spec:
+  tasks:
+    - name: git-clone
+      params:
+        - name: url
+          value: 'https://github.com/carsten-bornert/gxo-cp4i-labs'
+        - name: revision
+          value: ''
+        - name: refspec
+          value: ''
+        - name: submodules
+          value: 'true'
+        - name: depth
+          value: '1'
+        - name: sslVerify
+          value: 'true'
+        - name: crtFileName
+          value: ca-bundle.crt
+        - name: subdirectory
+          value: ''
+        - name: sparseCheckoutDirectories
+          value: ''
+        - name: deleteExisting
+          value: 'true'
+        - name: httpProxy
+          value: ''
+        - name: httpsProxy
+          value: ''
+        - name: noProxy
+          value: ''
+        - name: verbose
+          value: 'true'
+        - name: gitInitImage
+          value: 'gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.40.2'
+        - name: userHome
+          value: /home/git
+      taskRef:
+        kind: Task
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: workdir
+    - name: debug-workspace-example
+      params:
+        - name: target-dir
+          value: devops
+      runAfter:
+        - git-clone
+      taskRef:
+        kind: Task
+        name: debug-workspace-example
+      workspaces:
+        - name: source
+          workspace: workdir
+    - name: run-oc-command
+      params:
+        - name: SCRIPT
+          value: |-
+            cd openshift-defintions
+            ls -la
+            oc apply -f test.yaml
+        - name: VERSION
+          value: '4.7'
+      runAfter:
+        - debug-workspace-example
+      taskRef:
+        kind: Task
+        name: openshift-client
+      workspaces:
+        - name: manifest-dir
+          workspace: workdir
+  workspaces:
+    - name: workdir

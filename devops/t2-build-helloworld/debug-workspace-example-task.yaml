@@ -1,0 +1,60 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: debug-workspace-example
+spec:
+  params:
+    - default: devops
+      description: 'a string parameter example, in this case the name of a directory'
+      name: target-dir
+      type: string
+  steps:
+    - args:
+        - this is how to execute a single command
+      command:
+        - echo
+      computeResources: {}
+      image: ubuntu
+      name: echo-example
+    - args:
+        - '-c'
+        - |
+          echo "This is an example bash script with multiple commands"
+          ls -l /workspace/source
+          echo "Now using an env variable populated from a task parameter..."
+          echo TARGET_DIR: ${TARGET_DIR}
+          ls -l /workspace/source/${TARGET_DIR}
+          echo "Done"
+      command:
+        - sh
+      computeResources: {}
+      env:
+        - name: TARGET_DIR
+          value: $(params.target-dir)
+      image: ubuntu
+      name: bash-example
+    - args:
+        - '-c'
+        - |
+          echo "This is an example of creating a yaml file in sh"
+          mkdir /workspace/source/openshift-defintions
+          cat <<EOT >> /workspace/source/openshift-defintions/test.yaml
+          apiVersion: v1 
+          kind: ConfigMap
+          metadata:
+            name: test1
+          data:
+            key1: value
+          binaryData: {}
+          immutable: false 
+          EOT
+          cat /workspace/source/openshift-defintions/test.yaml
+          echo "Done"
+      command:
+        - sh
+      computeResources: {}
+      image: ubuntu
+      name: create-yaml-example
+  workspaces:
+    - description: the name will be used as the subdir in /workspace and will contain the contents of the PVC
+      name: source
