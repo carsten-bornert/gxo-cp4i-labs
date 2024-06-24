@@ -1,0 +1,46 @@
+apiVersion: gateway.apiconnect.ibm.com/v1beta1
+kind: GatewayCluster
+metadata:
+  name: apic-internal-gw
+  labels: {
+    app.kubernetes.io/instance: "gateway",
+    app.kubernetes.io/managed-by: "ibm-apiconnect",
+    app.kubernetes.io/name: "apic-internal-gw"
+  }
+spec:
+  version: 10.0.7.0
+  profile: n1xc1.m8
+  apicGatewayServiceV5CompatibilityMode: false
+  mgmtPlatformEndpointCASecret:
+    secretName: apic-ingress-ca
+  mgmtPlatformEndpointSvcCASecret:
+    secretName: apic-ingress-ca
+  gatewayEndpoint:
+    annotations:
+      cert-manager.io/issuer: ingress-issuer
+    hosts:
+      - name: apic-internal-gw-new.${INGRESS}
+        secretName: gw-endpoint
+  gatewayManagerEndpoint:
+    annotations:
+      cert-manager.io/issuer: ingress-issuer
+    hosts:
+      - name: apic-internal-gw-manager-new.${INGRESS}
+        secretName: gwv6-manager-endpoint
+  apicGatewayServiceTLS:
+    secretName: gateway-service
+  apicGatewayPeeringTLS:
+    secretName: gateway-peering
+  datapowerLogLevel: 3
+  license:
+    accept: true
+    license: L-MMBZ-295QZQ
+    metric: VIRTUAL_PROCESSOR_CORE
+    use: nonproduction
+  tokenManagementService:
+    enabled: true
+    storage:
+      storageClassName: ocs-storagecluster-ceph-rbd
+      volumeSize: 30Gi
+  adminUser:
+    secretName: gw-admin-secret
