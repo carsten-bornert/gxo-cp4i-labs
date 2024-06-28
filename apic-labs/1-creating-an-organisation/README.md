@@ -28,4 +28,4 @@ For this lab it is recommended to use chrome or firefox. You may have to allow p
 
 ![step5](./images/step5.png)
 
-<p>Once filled out click create and then click IBM Cloud Pak for Integration in the top left.</p>
+<p>Once filled out click create.</p>
