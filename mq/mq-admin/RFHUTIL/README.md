@@ -59,7 +59,7 @@ To view our other certificate run the following command:
 
 In order to connect RFHUtil and MQ Explorer to our OpenShift Cluster we need to create a route. The following steps will explain how to do this.
 
-1. Go to the following [YAML document](../QueueManagerYAML/route.yaml). The document will display a current example of what the route should look like.
+1. Go to the following [YAML document](./route.yaml). The document will display a current example of what the route should look like.
 
 2. Copy the YAML file and add it as a config map into OpenShift. To do this click the plus button at the top of the OpenShift cluster. (Make sure you are in the correct namespace)
 
