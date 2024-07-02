@@ -117,6 +117,6 @@ DISPLAY CHSTATUS([NAME OF QUEUE].SVRCONN)
 
 4. Enable the SSL Key Repositories. For the Trusted certificate Store set it to the ca.jks file. For the Personal Certificate Store set it to the server.jks file.
 
-5. Enable the SSL options. The SSL CipherSpec should be `TLS_AES_128_GCM_SHA256`
+5. Enable the SSL options. The SSL CipherSpec should be `ECDHE_RSA_AES_256_CBC_SHA384`
 
 6. Select Finish.
